@@ -12,9 +12,7 @@
 
 -----
 注意！我们只允许你修改以下文件，对其他文件的修改会被拒绝：
-- [src/main/java/com/github/hcsp/multithread/Boss.java](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/Boss.java)
-- [src/main/java/com/github/hcsp/multithread/Producer.java](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/Producer.java)
-- [src/main/java/com/github/hcsp/multithread/Consumer.java](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/Consumer.java)
+- [src/main/java/com/github/hcsp/multithread/](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/)
 -----
 
 

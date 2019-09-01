@@ -1,3 +1,1 @@
-src/main/java/com/github/hcsp/multithread/Boss.java
-src/main/java/com/github/hcsp/multithread/Producer.java
-src/main/java/com/github/hcsp/multithread/Consumer.java
+src/main/java/com/github/hcsp/multithread/
