@@ -3,17 +3,17 @@
         "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 <module name="Checker">
-    <property name="localeLanguage" value="en"/>
+    <property name="localeLanguage" container="en"/>
     <module name="NewlineAtEndOfFile">
-        <property name="lineSeparator" value="lf" />
+        <property name="lineSeparator" container="lf" />
     </module>
     <module name="FileTabCharacter">
-        <property name="fileExtensions" value="java,xml"/>
+        <property name="fileExtensions" container="java,xml"/>
     </module>
     <module name="RegexpSingleline">
         <!-- \s matches whitespace character, $ matches end of line. -->
-        <property name="format" value="\s+$"/>
-        <property name="message" value="Line has trailing spaces."/>
+        <property name="format" container="\s+$"/>
+        <property name="message" container="Line has trailing spaces."/>
     </module>
     <module name="TreeWalker">
         <module name="AvoidStarImport"/>
@@ -22,8 +22,8 @@
         <module name="UnusedImports"/>
         <module name="NeedBraces"/>
         <module name="JavadocMethod">
-            <property name="allowUndeclaredRTE" value="true"/>
-            <property name="scope" value="public" />
+            <property name="allowUndeclaredRTE" container="true"/>
+            <property name="scope" container="public" />
         </module>
         <module name="ModifierOrder"/>
         <module name="RedundantModifier"/>
