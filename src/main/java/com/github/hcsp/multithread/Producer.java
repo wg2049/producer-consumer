@@ -2,13 +2,12 @@ package com.github.hcsp.multithread;
 
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
 
 public class Producer extends Thread {
     Container container;
-    Lock lock;
+    Object lock;
 
-    public Producer(Container container, Lock lock) {
+    public Producer(Container container, Object lock) {
         this.container = container;
         this.lock = lock;
     }
@@ -16,11 +15,10 @@ public class Producer extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            try {
-                lock.lock();
+            synchronized (lock) {
                 while (container.getContainer().isPresent()) {
                     try {
-                        container.getNotConsumedYet().await();
+                        lock.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -29,9 +27,7 @@ public class Producer extends Thread {
                 int r = new Random().nextInt();
                 System.out.println("Producing " + r);
                 container.setContainer(Optional.of(r));
-                container.getNotProducedYet().signal();
-            } finally {
-                lock.unlock();
+                lock.notify();
             }
         }
     }
