@@ -1,14 +1,15 @@
 package com.github.hcsp.multithread;
 
-import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class Consumer extends Thread {
-    BlockingDeque<Integer> queue;
-    BlockingDeque<Integer> signalqueue;
+    BlockingQueue<Integer> queue;
+    Semaphore semaphore;
 
-    public Consumer(BlockingDeque<Integer> queue, BlockingDeque<Integer> signalqueue) {
+    public Consumer(BlockingQueue<Integer> queue, Semaphore semaphore) {
         this.queue = queue;
-        this.signalqueue = signalqueue;
+        this.semaphore = semaphore;
     }
 
     @Override
@@ -16,7 +17,7 @@ public class Consumer extends Thread {
         for (int i = 0; i < 10; i++) {
             try {
                 System.out.println("Consuming " + queue.take());
-                signalqueue.put(0);
+                semaphore.release();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

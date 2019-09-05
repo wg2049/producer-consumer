@@ -1,15 +1,16 @@
 package com.github.hcsp.multithread;
 
 import java.util.Random;
-import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class Producer extends Thread {
-    BlockingDeque<Integer> queue;
-    BlockingDeque<Integer> signalqueue;
+    BlockingQueue<Integer> queue;
+    Semaphore semaphore;
 
-    public Producer(BlockingDeque<Integer> queue, BlockingDeque<Integer> signalqueue) {
+    public Producer(BlockingQueue<Integer> queue, Semaphore semaphore) {
         this.queue = queue;
-        this.signalqueue = signalqueue;
+        this.semaphore = semaphore;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class Producer extends Thread {
             System.out.println("Producing " + r);
             try {
                 queue.put(r);
-                signalqueue.take();
+                semaphore.acquire();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

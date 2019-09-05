@@ -1,7 +1,8 @@
 package com.github.hcsp.multithread;
 
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
@@ -19,10 +20,10 @@ public class Boss {
         // Consuming -12345678
 
 
-        BlockingDeque<Integer> queue = new LinkedBlockingDeque<>(1);
-        BlockingDeque<Integer> signalqueue = new LinkedBlockingDeque<>(1);
-        Producer producer = new Producer(queue, signalqueue);
-        Consumer consumer = new Consumer(queue, signalqueue);
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
+        Semaphore semaphore = new Semaphore(0);
+        Producer producer = new Producer(queue, semaphore);
+        Consumer consumer = new Consumer(queue, semaphore);
 
         producer.start();
         consumer.start();
