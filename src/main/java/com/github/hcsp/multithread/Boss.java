@@ -1,5 +1,9 @@
 package com.github.hcsp.multithread;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.Semaphore;
+
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
@@ -15,8 +19,10 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        Producer producer = new Producer();
-        Consumer consumer = new Consumer();
+        BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
+        Semaphore semaphore = new Semaphore(0);
+        Producer producer = new Producer(queue, semaphore);
+        Consumer consumer = new Consumer(queue, semaphore);
 
         producer.start();
         consumer.start();
