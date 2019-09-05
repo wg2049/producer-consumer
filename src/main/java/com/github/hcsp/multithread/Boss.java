@@ -19,7 +19,6 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-
         BlockingQueue<Integer> queue = new LinkedBlockingQueue<>(1);
         Semaphore semaphore = new Semaphore(0);
         Producer producer = new Producer(queue, semaphore);
