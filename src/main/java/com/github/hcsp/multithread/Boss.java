@@ -1,6 +1,7 @@
 package com.github.hcsp.multithread;
 
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
@@ -17,12 +18,13 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        ReentrantLock lock = new ReentrantLock();
-        Container container = new Container(lock);
+//        ReentrantLock lock = new ReentrantLock();
+//        Container container = new Container(lock);
+        BlockingDeque<Integer> queue = new LinkedBlockingDeque<>(1);
+        BlockingDeque<Integer> signalQueue = new LinkedBlockingDeque<>(1);
 
-
-        Producer producer = new Producer(container, lock);
-        Consumer consumer = new Consumer(container, lock);
+        Producer producer = new Producer(queue, signalQueue);
+        Consumer consumer = new Consumer(queue, signalQueue);
 
         producer.start();
         consumer.start();

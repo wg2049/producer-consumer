@@ -1,39 +1,27 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingDeque;
 
 public class Producer extends Thread {
+    BlockingDeque<Integer> queue;
+    BlockingDeque<Integer> signalQueue;
 
-    Container container;
-    ReentrantLock lock;
-
-    Producer(Container container, ReentrantLock lock) {
-        this.container = container;
-        this.lock = lock;
+    public Producer(BlockingDeque<Integer> queue, BlockingDeque<Integer> signalQueue) {
+        this.queue = queue;
+        this.signalQueue = signalQueue;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
+            int r = new Random().nextInt();
+            System.out.println("Producing" + r);
             try {
-                lock.lock();
-                while (container.getContainer().isPresent()) {
-                    try {
-                        container.getNotConsumedYet().await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                int r = new Random().nextInt();
-                System.out.println("Producing " + r);
-                container.setContainer(Optional.of(r));
-
-               container.getNotProducedYet().signal();
-            } finally {
-                lock.unlock();
+                queue.put(r);
+                signalQueue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

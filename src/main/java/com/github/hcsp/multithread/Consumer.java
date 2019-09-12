@@ -1,38 +1,25 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingDeque;
 
 public class Consumer extends Thread {
 
-    Container container;
-    ReentrantLock lock;
+    BlockingDeque<Integer> queue;
+    BlockingDeque<Integer> signalQueue;
 
-    public Consumer(Container container, ReentrantLock lock) {
-        this.container = container;
-        this.lock = lock;
+    public Consumer(BlockingDeque<Integer> queue, BlockingDeque<Integer> signalQueue) {
+        this.queue = queue;
+        this.signalQueue = signalQueue;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
             try {
-                lock.lock();
-                while (!container.getContainer().isPresent()) {
-                    try {
-                        container.getNotProducedYet().await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Integer value = container.getContainer().get();
-                container.setContainer(Optional.empty());
-                System.out.println("Consuming " + value);
-
-                container.getNotConsumedYet().signal();
-            } finally {
-                lock.unlock();
+                System.out.println("Consuming" + queue.take());
+                signalQueue.put(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
