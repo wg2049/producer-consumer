@@ -1,13 +1,13 @@
-package com.github.hcsp.multithread;
+package com.github.hcsp.multithread.method2;
 
 import java.util.Optional;
-
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Consumer extends Thread {
     Container container;
-    final Object lock;
+    ReentrantLock lock;
 
-    public Consumer(Container container, Object lock) {
+    public Consumer(Container container, ReentrantLock lock) {
         this.container = container;
         this.lock = lock;
     }
@@ -15,19 +15,23 @@ public class Consumer extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            synchronized (lock) {
+            try {
+                lock.lock();
                 while (!container.getContainer().isPresent()) {
                     try {
-                        lock.wait();
+                        container.getNotBeenConsumer().await();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                Integer integer = container.getContainer().get();
+                Integer random = container.getContainer().get();
                 container.setContainer(Optional.empty());
-                System.out.println("Consuming " + integer);
-                lock.notifyAll();
+                System.out.println("Consuming " + random);
+                container.getNotBeenProduct().signal();
+            } finally {
+                lock.unlock();
             }
         }
     }
 }
+
