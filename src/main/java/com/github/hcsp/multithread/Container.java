@@ -2,14 +2,14 @@ package com.github.hcsp.multithread;
 
 import java.util.Optional;
 
-class Container {
-    public Optional<Integer> value = Optional.empty();
+public class Container {
+    Optional<Integer> container = Optional.empty();
 
-    Optional<Integer> getValue() {
-        return value;
+    public Optional<Integer> getContainer() {
+        return container;
     }
 
-    void setValue(Optional<Integer> value) {
-        this.value = value;
+    public void setContainer(Optional<Integer> container) {
+        this.container = container;
     }
 }

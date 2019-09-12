@@ -4,10 +4,10 @@ import java.util.Optional;
 
 public class Consumer extends Thread {
 
-    private Container container;
-    private final Object lock;
+    Container container;
+    Object lock;
 
-    Consumer(Container container, Object lock) {
+    public Consumer(Container container, Object lock) {
         this.container = container;
         this.lock = lock;
     }
@@ -16,7 +16,7 @@ public class Consumer extends Thread {
     public void run() {
         for (int i = 0; i < 10; i++) {
             synchronized (lock) {
-                while (!container.getValue().isPresent()) {
+                while (!container.getContainer().isPresent()) {
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
@@ -24,8 +24,8 @@ public class Consumer extends Thread {
                     }
                 }
 
-                Integer value = container.getValue().get();
-                container.setValue(Optional.empty());
+                Integer value = container.getContainer().get();
+                container.setContainer(Optional.empty());
                 System.out.println("Consuming " + value);
 
                 lock.notify();

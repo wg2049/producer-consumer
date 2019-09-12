@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class Producer extends Thread {
 
-    private Container container;
-    private final Object lock;
+    Container container;
+    Object lock;
 
     Producer(Container container, Object lock) {
         this.container = container;
@@ -17,7 +17,7 @@ public class Producer extends Thread {
     public void run() {
         for (int i = 0; i < 10; i++) {
             synchronized (lock) {
-                while (container.getValue().isPresent()) {
+                while (container.getContainer().isPresent()) {
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
@@ -27,7 +27,7 @@ public class Producer extends Thread {
 
                 int r = new Random().nextInt();
                 System.out.println("Producing " + r);
-                container.setValue(Optional.of(r));
+                container.setContainer(Optional.of(r));
 
                 lock.notify();
             }

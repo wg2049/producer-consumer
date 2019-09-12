@@ -1,7 +1,5 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
-
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
