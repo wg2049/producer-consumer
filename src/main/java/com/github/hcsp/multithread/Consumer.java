@@ -16,7 +16,7 @@ public class Consumer extends Thread {
     public void run() {
         IntStream.rangeClosed(1, 10).forEach(x -> {
             synchronized (lock) {
-                while (container.getValue().isEmpty()) {
+                while (!container.getValue().isPresent()) {
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
