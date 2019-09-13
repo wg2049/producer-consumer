@@ -1,13 +1,14 @@
 package com.github.hcsp.multithread;
 
 import java.util.Optional;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.IntStream;
 
 public class Consumer extends Thread {
-    private final Object lock;
+    private final Lock lock;
     private Container container;
 
-    public Consumer(Object lock, Container container) {
+    public Consumer(Lock lock, Container container) {
         this.lock = lock;
         this.container = container;
     }
@@ -15,20 +16,21 @@ public class Consumer extends Thread {
     @Override
     public void run() {
         IntStream.rangeClosed(1, 10).forEach(x -> {
-            synchronized (lock) {
+            try {
+                lock.lock();
+
                 while (!container.getValue().isPresent()) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    container.getNotProducedYet().await();
                 }
 
                 Integer value = container.getValue().get();
                 System.out.println("Consuming " + value);
                 container.setValue(Optional.empty());
-
-                lock.notify();
+                container.getNotConsumedYet().signal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         });
     }

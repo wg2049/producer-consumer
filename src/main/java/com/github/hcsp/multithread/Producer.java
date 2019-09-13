@@ -2,13 +2,14 @@ package com.github.hcsp.multithread;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
 import java.util.stream.IntStream;
 
 public class Producer extends Thread {
-    private final Object lock;
+    private final Lock lock;
     private Container container;
 
-    public Producer(Object lock, Container container) {
+    public Producer(Lock lock, Container container) {
         this.lock = lock;
         this.container = container;
     }
@@ -16,20 +17,21 @@ public class Producer extends Thread {
     @Override
     public void run() {
         IntStream.rangeClosed(1, 10).forEach(x -> {
-            synchronized (lock) {
+            try{
+                lock.lock();
+
                 while (container.getValue().isPresent()) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    container.getNotConsumedYet().await();
                 }
 
                 Integer randomInt = new Random().nextInt();
                 System.out.println("Producing " + randomInt);
                 container.setValue(Optional.of(randomInt));
-
-                lock.notify();
+                container.getNotProducedYet().signal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
             }
         });
     }
