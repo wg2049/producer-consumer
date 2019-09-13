@@ -25,7 +25,7 @@ public class Consumer extends Thread {
                 }
 
                 Integer value = container.getValue().get();
-                System.out.println("Consumed: " + value);
+                System.out.println("Consuming " + value);
                 container.setValue(Optional.empty());
 
                 lock.notify();

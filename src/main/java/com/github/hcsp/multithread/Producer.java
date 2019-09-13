@@ -26,7 +26,7 @@ public class Producer extends Thread {
                 }
 
                 Integer randomInt = new Random().nextInt();
-                System.out.println("Produced: " + randomInt);
+                System.out.println("Producing " + randomInt);
                 container.setValue(Optional.of(randomInt));
 
                 lock.notify();
