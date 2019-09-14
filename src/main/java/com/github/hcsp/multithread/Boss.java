@@ -18,8 +18,6 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-//        ReentrantLock lock = new ReentrantLock();
-//        Container container = new Container(lock);
         BlockingDeque<Integer> queue = new LinkedBlockingDeque<>(1);
         BlockingDeque<Integer> signalQueue = new LinkedBlockingDeque<>(1);
 
