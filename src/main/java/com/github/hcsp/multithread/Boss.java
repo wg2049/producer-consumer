@@ -1,7 +1,11 @@
 package com.github.hcsp.multithread;
 
+import java.util.Optional;
+
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
+        final Object lock = new Object();
+        Container container = new Container(Optional.empty());
         // 请实现一个生产者/消费者模型，其中：
         // 生产者生产10个随机的整数供消费者使用（随机数可以通过new Random().nextInt()获得）
         // 使得标准输出依次输出它们，例如：
@@ -15,8 +19,8 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        Producer producer = new Producer();
-        Consumer consumer = new Consumer();
+        Producer producer = new Producer(lock, container);
+        Consumer consumer = new Consumer(lock, container);
 
         producer.start();
         consumer.start();
