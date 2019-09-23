@@ -1,16 +1,14 @@
 package com.github.hcsp.multithread;
 
 import java.util.Optional;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
-        final Lock lock = new ReentrantLock();
-        final Condition containerNotValue = lock.newCondition();
-        final Condition containerYetValue = lock.newCondition();
 
+        BlockingQueue blockingQueue = new ArrayBlockingQueue(1);
+        BlockingQueue singleQueue =  new ArrayBlockingQueue(1);
         Container container = new Container(Optional.empty());
         // 请实现一个生产者/消费者模型，其中：
         // 生产者生产10个随机的整数供消费者使用（随机数可以通过new Random().nextInt()获得）
@@ -25,8 +23,8 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        Producer producer = new Producer(lock, container, containerNotValue, containerYetValue);
-        Consumer consumer = new Consumer(lock, container, containerNotValue, containerYetValue);
+        Producer producer = new Producer(blockingQueue, singleQueue);
+        Consumer consumer = new Consumer(blockingQueue, singleQueue);
 
         producer.start();
         consumer.start();

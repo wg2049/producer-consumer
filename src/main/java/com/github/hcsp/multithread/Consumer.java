@@ -1,39 +1,23 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.BlockingQueue;
 
 public class Consumer extends Thread {
-    private Lock lock;
-    private Container container;
-    private Condition containerNotValue;
-    private Condition containerYetValue;
+    private BlockingQueue blockingQueue;
+    private BlockingQueue singleQueue;
 
-    public Consumer(Lock lock, Container container, Condition containerNotValue, Condition containerYetValue) {
-        this.lock = lock;
-        this.container = container;
-        this.containerNotValue = containerNotValue;
-        this.containerYetValue = containerYetValue;
+    public Consumer(BlockingQueue blockingQueue, BlockingQueue singleQueue) {
+        this.blockingQueue = blockingQueue;
+        this.singleQueue = singleQueue;
     }
-
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            lock.lock();
             try {
-                while (!container.getContainer().isPresent()) {
-                    try {
-                        containerNotValue.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                System.out.println("Consuming " + container.getContainer().get());
-                container.setContainer(Optional.empty());
-                containerYetValue.signal();
-            } finally {
-                lock.unlock();
+                System.out.println("Consuming " + blockingQueue.take());
+                singleQueue.put(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
