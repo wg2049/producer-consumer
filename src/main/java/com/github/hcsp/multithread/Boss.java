@@ -1,6 +1,5 @@
 package com.github.hcsp.multithread;
 
-
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
@@ -15,10 +14,9 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
-        Container container = new Container();
-        Object lock = new Object();
-        Producer producer = new Producer(container, lock);
-        Consumer consumer = new Consumer(container, lock);
+
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
