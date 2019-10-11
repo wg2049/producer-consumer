@@ -1,5 +1,7 @@
 package com.github.hcsp.multithread;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
@@ -16,9 +18,9 @@ public class Boss {
         // Consuming -12345678
         for (int i = 0; i < 10; i++) {
 
+            ReentrantLock lock = new ReentrantLock();
+            Container container = new Container(lock);
 
-            Container container = new Container();
-            Object lock = new Object();
 
             Producer producer = new Producer(container, lock);
             Consumer consumer = new Consumer(container, lock);

@@ -1,22 +1,24 @@
 package com.github.hcsp.multithread;
 
 import java.util.Optional;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Consumer extends Thread {
     private Container container;
-    private final Object lock;
+    ReentrantLock lock;
 
-    Consumer(Container container, Object lock) {
+    Consumer(Container container, ReentrantLock lock) {
         this.container = container;
-        this.lock = lock;
+        this.lock =  lock;
     }
 
     @Override
     public void run() {
-            synchronized (lock) {
+            try {
+                lock.lock();
                 while (!container.getValue().isPresent()) {
                     try {
-                        lock.wait();
+                        container.getNotProducedYet().await();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -24,7 +26,9 @@ public class Consumer extends Thread {
                 Integer value = container.getValue().get();
                 container.setValue(Optional.empty());
                 System.out.println("Consuming" +" "+ value);
-                lock.notify();
+                container.getNotProducedYet().signal();
+            } finally {
+                lock.unlock();//无论发生什么都要把锁释放掉
             }
     }
 }
