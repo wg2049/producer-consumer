@@ -1,34 +1,25 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingQueue;
+
 
 public class Consumer extends Thread {
-    private Container container;
-    ReentrantLock lock;
 
-    Consumer(Container container, ReentrantLock lock) {
-        this.container = container;
-        this.lock = lock;
+    BlockingQueue<Integer> queue; //单独的一个BlockingQueue消费者取出后就马上进行生产，导致没消费完成就已经完成第二次生产
+    BlockingQueue<Integer> signal; //需要一个锁来控制生产者的速度
+
+    public Consumer(BlockingQueue<Integer> queue, BlockingQueue<Integer> signal) {
+        this.queue = queue;
+        this.signal = signal;
     }
 
     @Override
     public void run() {
         try {
-            lock.lock();
-            while (!container.getValue().isPresent()) {
-                try {
-                    container.getNotProducedYet().await();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Integer value = container.getValue().get();
-            container.setValue(Optional.empty());
-            System.out.println("Consuming" + " " + value);
-            container.getNotProducedYet().signal();
-        } finally {
-            lock.unlock(); //无论发生什么都要把锁释放掉
+            System.out.println("Consuming" + " " + queue.take());
+            signal.put(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
