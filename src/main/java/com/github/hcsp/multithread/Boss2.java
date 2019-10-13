@@ -1,6 +1,8 @@
 package com.github.hcsp.multithread;
 
-public class Boss {
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Boss2 {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
         // 生产者生产10个随机的整数供消费者使用（随机数可以通过new Random().nextInt()获得）
@@ -14,7 +16,7 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
-        Object lock = new Object();
+        ReentrantLock lock = new ReentrantLock();
         Container container = new Container();
 
         Producer producer = new Producer(container, lock);

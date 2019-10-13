@@ -1,12 +1,13 @@
 package com.github.hcsp.multithread;
 
 import java.util.Optional;
+import java.util.Random;
 
-public class Consumer extends Thread {
-    private Object lock;
+public class Producer2 extends Thread {
     private Container container;
+    private Object lock;
 
-    public Consumer(Container container, Object lock) {
+    public Producer2(Container container, Object lock) {
         this.container = container;
         this.lock = lock;
     }
@@ -15,16 +16,16 @@ public class Consumer extends Thread {
     public void run() {
         for (int i = 0; i < 10; i++) {
             synchronized (lock) {
-                while (!container.getValue().isPresent()) {
+                while (container.getValue().isPresent()) {
                     try {
                         lock.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                Integer v = container.getValue().get();
-                container.setValue(Optional.empty());
-                System.out.println("Consuming " + v);
+                Integer r = new Random().nextInt();
+                container.setValue(Optional.of(r));
+                System.out.println("Producing " + r);
                 lock.notify();
             }
 
