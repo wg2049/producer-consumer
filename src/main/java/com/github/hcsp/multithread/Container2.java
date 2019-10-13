@@ -10,19 +10,17 @@ public class Container2 {
     private Condition notProducedYet; // 尚未被生产出来
     private Optional<Integer> value = Optional.empty();
 
+    public Container2(ReentrantLock lock) {
+        this.notConsumedYet = lock.newCondition();
+        this.notProducedYet = lock.newCondition();
+    }
+
     public Condition getNotConsumedYet() {
         return notConsumedYet;
     }
 
     public Condition getNotProducedYet() {
         return notProducedYet;
-    }
-
-    public Container2(ReentrantLock lock) {
-        this.notConsumedYet = lock.newCondition();
-        this.notProducedYet = lock.newCondition();
-
-
     }
 
     public Optional<Integer> getValue() {

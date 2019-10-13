@@ -15,11 +15,11 @@ public class Consumer2 extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
+            lock.lock();
             try {
-                lock.lock();
                 while (!container.getValue().isPresent()) {
                     try {
-                        container.getNotProducedYet().await();
+                        container.getNotConsumedYet().await();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -27,11 +27,10 @@ public class Consumer2 extends Thread {
                 Integer v = container.getValue().get();
                 container.setValue(Optional.empty());
                 System.out.println("Consuming " + v);
-                container.getNotConsumedYet().signal();
+                container.getNotProducedYet().signal();
             } finally {
                 lock.unlock();
             }
-
         }
     }
 }

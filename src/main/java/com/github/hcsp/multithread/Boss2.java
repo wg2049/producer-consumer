@@ -17,13 +17,13 @@ public class Boss2 {
         // Producing -12345678
         // Consuming -12345678
         ReentrantLock lock = new ReentrantLock();
-        Container container = new Container();
+        Container2 container = new Container2(lock);
 
-        Producer producer = new Producer(container, lock);
-        Consumer consumer = new Consumer(container, lock);
+        Producer2 producer = new Producer2(container, lock);
+        Consumer2 consumer = new Consumer2(container, lock);
 
-        producer.start();
         consumer.start();
+        producer.start();
 
         producer.join();
         producer.join();
