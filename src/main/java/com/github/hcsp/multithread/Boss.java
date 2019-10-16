@@ -1,10 +1,6 @@
 package com.github.hcsp.multithread;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 public class Boss {
-
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
         // 生产者生产10个随机的整数供消费者使用（随机数可以通过new Random().nextInt()获得）
@@ -18,10 +14,9 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
-        BlockingQueue<Integer> blockingQueue = new LinkedBlockingQueue<>(1);
-        BlockingQueue<Integer> signal = new LinkedBlockingQueue<>(1);
-        Producer producer = new Producer(blockingQueue, signal);
-        Consumer consumer = new Consumer(blockingQueue, signal);
+
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
