@@ -15,11 +15,8 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        Object lock = new Object();
-        Food food = new Food(null);
-
-        Consumer consumer = new Consumer(food, lock);
-        Producer producer = new Producer(food, lock);
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
