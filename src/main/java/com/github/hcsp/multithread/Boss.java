@@ -1,10 +1,5 @@
 package com.github.hcsp.multithread;
 
-import java.util.LinkedList;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
@@ -20,14 +15,8 @@ public class Boss {
         // Producing -12345678
         // Consuming -12345678
 
-        // the lock object
-        final Lock lock = new ReentrantLock();
-        final Condition empty = lock.newCondition();
-        final Condition full = lock.newCondition();
-        // the data container
-        LinkedList<Integer> buffer = new LinkedList<>();
-        Consumer producer = new Consumer(lock, buffer, full, empty);
-        Producer consumer = new Producer(lock, buffer, full, empty);
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
