@@ -14,10 +14,9 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
-        CubbyHole hole = new CubbyHole();
-        hole.setForCount(10);
-        Producer producer = new Producer(hole);
-        Consumer consumer = new Consumer(hole);
+
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
