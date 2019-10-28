@@ -1,8 +1,5 @@
 package com.github.hcsp.multithread;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
-
 public class Boss {
     public static void main(String[] args) throws InterruptedException {
         // 请实现一个生产者/消费者模型，其中：
@@ -17,11 +14,9 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
-        BlockingQueue queue = new LinkedBlockingDeque(1);
-        BlockingQueue signal = new LinkedBlockingDeque(1);
 
-        Producer producer = new Producer(queue, signal);
-        Consumer consumer = new Consumer(queue, signal);
+        Producer producer = new Producer();
+        Consumer consumer = new Consumer();
 
         producer.start();
         consumer.start();
