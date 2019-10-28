@@ -1,31 +1,27 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
 
 public class Producer extends Thread {
-    private Container container;
-    private final Object lock;
+    BlockingQueue queue;
+    BlockingQueue signal;
 
-    public Producer(Container container, Object lock) {
-        this.container = container;
-        this.lock = lock;
+    public Producer(BlockingQueue queue, BlockingQueue signal) {
+        this.queue = queue;
+        this.signal = signal;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            synchronized (lock) {
-                while (container.getValue().isPresent()) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                container.setValue(Optional.of(new Random().nextInt()));
-                System.out.println("Producing " + container.getValue().get());
-                lock.notify();
+            try {
+                int r = new Random().nextInt();
+                System.out.println("Producing " + r);
+                queue.put(r);
+                signal.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
