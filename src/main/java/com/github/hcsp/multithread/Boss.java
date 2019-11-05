@@ -14,9 +14,16 @@ public class Boss {
         // Consuming 10086
         // Producing -12345678
         // Consuming -12345678
+        // 三种解决方案
+        // wait/notify/notifyAll
+        // Lock/Condition
+        // BlockingQueue
 
-        Producer producer = new Producer();
-        Consumer consumer = new Consumer();
+        Container container = new Container();
+        Object lock = new Object();
+
+        Producer producer = new Producer(container, lock);
+        Consumer consumer = new Consumer(container, lock);
 
         producer.start();
         consumer.start();
