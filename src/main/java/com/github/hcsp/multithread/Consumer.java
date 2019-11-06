@@ -1,31 +1,24 @@
 package com.github.hcsp.multithread;
 
-import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
 
 public class Consumer extends Thread {
-    Container container;
-    Object lock;
+    BlockingQueue<Integer> queue;
+    BlockingQueue<Integer> signalQueue;
 
-    public Consumer(Container container, Object lock) {
-        this.container = container;
-        this.lock = lock;
+    public Consumer(BlockingQueue<Integer> queue, BlockingQueue<Integer> signalQueue) {
+        this.queue = queue;
+        this.signalQueue = signalQueue;
     }
 
     @Override
     public void run() {
         for (int i = 0; i < 10; i++) {
-            synchronized (lock) {
-                while (!container.getValue().isPresent()) {
-                    try {
-                        lock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Integer value = container.getValue().get();
-                container.setValue(Optional.empty());
-                System.out.println("consumer " + value);
-                lock.notify();
+            try {
+                System.out.println("Consuming " + queue.take());
+                signalQueue.put(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
