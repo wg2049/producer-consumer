@@ -28,7 +28,7 @@ Consuming -12345678
 - `Exchanger`
 - 等等等等
 
-你可以在[`ProducerConsumer1`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/ProducerConsumer1.java)/[`ProducerConsumer2`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/ProducerConsumer2.java)/../[`ProducerConsumer5`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/ProducerConsumer5.java)中使用不同方式完成挑战，
+你可以在[`ProducerConsumer1`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/ProducerConsumer1.java)/[`ProducerConsumer2`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/ProducerConsumer2.java)/../[`ProducerConsumer5`](https://github.com/hcsp/producer-consumer/blob/master/src/main/java/com/github/hcsp/multithread/ProducerConsumer5.java)中使用不同方式完成挑战，
 你也可以使用类似的格式，新建`ProducerConsumerX`类使用更多方法完成挑战，每当你新建`ProducerConsumerX`类，它都会被自动测试。
 
 祝你好运！
