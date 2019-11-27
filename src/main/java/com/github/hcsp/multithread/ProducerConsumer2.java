@@ -3,7 +3,6 @@ package com.github.hcsp.multithread;
 
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProducerConsumer2 {
     static  ArrayBlockingQueue<Integer> integers = new ArrayBlockingQueue<>(1);
