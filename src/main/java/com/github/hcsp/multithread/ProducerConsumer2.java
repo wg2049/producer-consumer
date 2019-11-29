@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class ProducerConsumer2 {
-    static  ArrayBlockingQueue<Integer> integers = new ArrayBlockingQueue<>(1);
+        static  ArrayBlockingQueue<Integer> integers = new ArrayBlockingQueue<>(1);
         public static void main(String[] args) throws InterruptedException {
 
             for (int i = 0; i < 10; i++) {
